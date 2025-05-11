@@ -13,17 +13,16 @@ The core challenge this starter solves is enabling Appwrite authentication in a 
    - This cookie is sent with every request to the Appwrite API
 
 2. **Server-Side Rendering Challenge**:
-   - In SSR, the Nuxt server needs to read this cookie and use it to authenticate with Appwrite
+   - During SSR, the Nuxt server needs to read this cookie and use it to authenticate with Appwrite
    - The server then needs to pass authentication data to the client
 
 3. **Solution**:
    - The Nginx proxy rewrites cookie domains to work across environments
-   - Our Nuxt plugin (`plugins/10.appwrite.ts`) reads the session cookie during SSR
-   - The plugin creates a session with Appwrite using the cookie value
+   - The Nuxt plugin (`plugins/10.appwrite.ts`) reads the session cookie during SSR
+   - The Plugin sets up the Appwrite client and sets the session using the cookie value
    - User data is stored in a shared state accessible to both server and client (Pinia / useState etc.)
 
 ```ts
-// Key part of 10.appwrite.ts
 if (import.meta.server) {
   const cookie = getCookie();
   if (cookie.value) {
@@ -67,6 +66,51 @@ export default () => {
   const { appwriteProjectId } = useRuntimeConfig().public;
   return `a_session_${appwriteProjectId}`;
 };
+```
+
+### 3. Nuxt Mount Plugin
+```ts
+// plugins/10.appwrite.ts
+import { Account, AppwriteException } from "appwrite";
+
+const getCookie = () => {
+  const name = createCookieName();
+  const cookie = useCookie(name);
+  return cookie && cookie.value ? cookie : useCookie(name + "_legacy");
+}
+
+export default defineNuxtPlugin(async () => {
+  const store = useStore();
+  const client = getAppwriteClient();
+
+  if (import.meta.server) {
+    const cookie = getCookie();
+    if (cookie.value) {
+      client.setSession(cookie.value);
+      const account = new Account(client);
+      try {
+        store.user = await account.get();
+      } catch (err) {
+        // Add error handling for your specific use case
+        console.log("Error fetching user data:", err);
+        const error = err as AppwriteException;
+        switch (error.type) {
+          case "user_session_already_exists":
+          case "user_more_factors_required":
+            await account.deleteSession("current");
+            cookie.value = null;
+            break;
+        }
+      }
+    }
+  };
+
+  return {
+    provide: {
+      appwrite: client,
+    }
+  }
+});
 ```
 
 ## Getting Started
