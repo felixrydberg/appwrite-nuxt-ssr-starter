@@ -1,6 +1,7 @@
 # Note:
 Only Applicable to Frankfurt hosted Appwrite cloud instances. You will have to change nginx config to match your region for testing.
 Nginx, Docker and SSL certs are only for demostration purposes. You should not use it in production. The Nginx config can be taken as a reference (Cookie rewrite) for your own setup.
+The most important thing to have as a takeaway is that if you are able to get a HttpOnly cookie from Appwrite, you can use it in SSR mode.
 
 # Appwrite Nuxt SSR Starter
 
