@@ -1,0 +1,56 @@
+# SSL Certificates
+packages/nginx/ssl/
+*.pem
+
+# Node.js dependencies
+node_modules/
+.pnpm-store/
+.npm/
+
+# Nuxt.js build output
+.nuxt/
+.output/
+dist/
+.nitro/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Cache directories
+.cache/
+.temp/
+
+# Appwrite local storage (if used for local development)
+appwrite-storage/
+
+# Test coverage
+coverage/
+
+# Docker volumes
+docker/volumes/
+volumes/
+
+# Temporary files
+*.tmp
+*.bak
+.eslintcache
