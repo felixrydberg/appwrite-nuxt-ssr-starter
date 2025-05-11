@@ -1,3 +1,6 @@
+# Note:
+Only Applicable to Frankfurt hosted Appwrite cloud instances. You will have to change nginx config to match your region for testing.
+
 # Appwrite Nuxt SSR Starter
 
 A starter template for building server-side rendered Nuxt applications with Appwrite authentication that works in both client and server contexts.
