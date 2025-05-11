@@ -1,5 +1,6 @@
 # Note:
 Only Applicable to Frankfurt hosted Appwrite cloud instances. You will have to change nginx config to match your region for testing.
+Nginx, Docker and SSL certs are only for demostration purposes. You should not use it in production. The Nginx config can be taken as a reference (Cookie rewrite) for your own setup.
 
 # Appwrite Nuxt SSR Starter
 
