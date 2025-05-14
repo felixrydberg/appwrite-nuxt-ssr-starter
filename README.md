@@ -20,7 +20,7 @@ To make this demo possible with self-hosted Appwrite instances should be the sam
 
 1. **Cookie-based Authentication**: 
    - When a user logs in, Appwrite sets an HTTP-only cookie with the session token
-   - This cookie is sent with every request to the Appwrite API since the domain key should be the same.
+   - This cookie is sent with every request to the Appwrite API since the domain key is the same.
 
 2. **Server-Side Rendering Challenge**:
    - During SSR, the Nuxt server needs to read this cookie and use it to authenticate with Appwrite
