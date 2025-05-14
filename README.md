@@ -1,21 +1,26 @@
 # Note:
-Only Applicable to Frankfurt hosted Appwrite cloud instances. You will have to change nginx config to match your region for testing.
-Nginx, Docker and SSL certs are only for demostration purposes. You should not use it in production. The Nginx config can be taken as a reference (Cookie rewrite) for your own setup.
-The most important thing to have as a takeaway is that if you are able to get a HttpOnly cookie from Appwrite, you can use it in SSR mode.
+⚠️ **IMPORTANT**: The Nginx and Docker configurations provided are for **Demo Only**. They are very specific for just this demo purpose. For production use Appwrite Custom Domain to get the same domain key in your cookie as your hosted site (This will make the browser include it in all web-sdk requests).
 
-# Appwrite Nuxt SSR Starter
+Demo will only work with Frankfurt hosted Appwrite cloud instances. You will have to change Nginx config to match your region for testing.
+Nginx, Docker and SSL certs are only for demostration purposes. **You should not use it in production**. The Nginx config can be taken as a reference (Cookie Domain rewrite) for your own setup.
+The most important thing to have as a takeaway is that if you are able to get a HttpOnly cookie from Appwrite saved in your browser under the same domain, you can use it in Nuxt SSR.
 
-A starter template for building server-side rendered Nuxt applications with Appwrite authentication that works in both client and server contexts.
-
-## Concept: SSR Authentication with Appwrite
-
-The core challenge this starter solves is enabling Appwrite authentication in a server-side rendered Nuxt application. Traditionally, Appwrite uses client-side auth where the session is stored in a cookie, but this doesn't work automatically with SSR.
+### Self-hosters 💛
+To make this demo possible with self-hosted Appwrite instances should be the same as changing the region. In ```packages/nginx``` you will find a config. This config will contain some really weird code just to force HTTPS during development. In most cases this code should be able to be removed, but what is easier to do is just change ```fra.cloud.appwrite.io``` to your own domain.
+**If you wish to remove the SSL certs:**
+- Nginx Config
+   - Remove rows ```30-42```
+   - Remove row ```52```
+   - Remove rows ```91-98```
+- Nuxt Dockerfile
+   - Remove row ```5```
+   - Remove row ```13```
 
 ### How It Works
 
 1. **Cookie-based Authentication**: 
    - When a user logs in, Appwrite sets an HTTP-only cookie with the session token
-   - This cookie is sent with every request to the Appwrite API
+   - This cookie is sent with every request to the Appwrite API since the domain key should be the same.
 
 2. **Server-Side Rendering Challenge**:
    - During SSR, the Nuxt server needs to read this cookie and use it to authenticate with Appwrite
@@ -24,7 +29,7 @@ The core challenge this starter solves is enabling Appwrite authentication in a 
 3. **Solution**:
    - The Nginx proxy rewrites cookie domains to work across environments
    - The Nuxt plugin (`plugins/10.appwrite.ts`) reads the session cookie during SSR
-   - The Plugin sets up the Appwrite client and sets the session using the cookie value
+   - The Plugin sets up the Appwrite client and sets the session (During SSR) using the cookie value
    - User data is stored in a shared state accessible to both server and client (Pinia / useState etc.)
 
 ```ts
@@ -118,11 +123,11 @@ export default defineNuxtPlugin(async () => {
 });
 ```
 
-## Getting Started
+## Running the Demo
 
 ### Requirements
 - Node.js
-- Docker and Docker Compose (for containerized development)
+- Docker and Docker Compose
 
 ### Installation
 
@@ -135,9 +140,9 @@ export default defineNuxtPlugin(async () => {
 
 ### Development Setup
 
-#### SSL Certificate Setup (Required for Appwrite Cloud)
+#### SSL Certificate Setup (Required for Appwrite Cloud Projects)
 
-For local development with HTTPS, generate self-signed SSL certificates:
+For local development with HTTPS (Required by Appwrite Cloud), generate self-signed SSL certificates:
 
 ```bash
 # Create the SSL directory
@@ -160,9 +165,9 @@ APPWRITE_ENDPOINT="https://fra.cloud.appwrite.io/v1"
 APPWRITE_PROJECT_ID="your-project-id"
 ```
 
-### Running the Application
+### Running the Demo
 
-#### With Docker (Recommended for Appwrite Cloud)
+#### With Docker (Required for Appwrite Cloud)
 
 ```bash
 docker-compose up
@@ -170,18 +175,9 @@ docker-compose up
 
 This will start both the Nuxt application and Nginx proxy server.
 
-#### Without Docker
-
-```bash
-cd packages/nuxt
-npm run dev
-```
-
 ## Available Scripts
 
-- `dev`: Starts the development server with hot reloading
 - `dev:docker`: Starts the development server in Docker (with certificate handling)
-- `dev:host`: Starts the development server with the --host option
 
 ## Security Notice
 
