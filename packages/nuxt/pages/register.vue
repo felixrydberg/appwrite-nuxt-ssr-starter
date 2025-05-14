@@ -3,12 +3,12 @@
 import type { User } from '~/types';
 
   const store = useStore();
-  const name = ref('felix');
-  const email = ref('felixryd@gmail.com');
+  const name = ref('');
+  const email = ref('');
   const emailError = ref('');
-  const password = ref('Testing1!');
+  const password = ref('');
   const passwordError = ref('');
-  const passwordConfirm = ref('Testing1!');
+  const passwordConfirm = ref('');
   const passwordConfirmError = ref('');
 
   const onSignup = async () => {
