@@ -138,17 +138,17 @@ export default defineNuxtPlugin(async () => {
    npm install
    ```
 
-### Development Setup
+### Demo Setup
 
 #### SSL Certificate Setup (Required for Appwrite Cloud Projects)
 
-For local development with HTTPS (Required by Appwrite Cloud), generate self-signed SSL certificates:
+For demo with HTTPS (Required by Appwrite Cloud), generate self-signed SSL certificates:
 
 ```bash
 # Create the SSL directory
 mkdir -p packages/nginx/ssl
 
-# Generate self-signed certificates for development
+# Generate self-signed certificates for demo
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout packages/nginx/ssl/key.pem \
   -out packages/nginx/ssl/cert.pem
