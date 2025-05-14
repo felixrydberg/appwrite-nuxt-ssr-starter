@@ -173,10 +173,6 @@ docker-compose up
 
 This will start both the Nuxt application and Nginx proxy server.
 
-## Available Scripts
-
-- `dev:docker`: Starts the development server in Docker (with certificate handling)
-
 ## Security Notice
 
 ⚠️ **IMPORTANT**: The Nginx and Docker configurations provided are for **development only**. They contain security compromises (self-signed certificates, insecure cookies) that should never be used in production environments.
